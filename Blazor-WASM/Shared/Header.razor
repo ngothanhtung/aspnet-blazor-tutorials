@@ -1,0 +1,27 @@
+<h1 style="color: blue">@Text YEAH!</h1>
+
+<h1>@DefaultText</h1>
+@{
+  var className = this.Status ? "btn-primary" : "btn-success";
+}
+<button class="btn @className" @onclick="ChangeStatus">Change Text</button>
+
+@code {
+
+  private bool Status = false;
+  private string DefaultText = "Yeah";
+
+  [Parameter]
+  public string Text { get; set; } = "";
+
+  private void ChangeText()
+  {
+    this.DefaultText = "Welcome to Blazor";
+  }
+
+  private void ChangeStatus()
+  {
+    this.Status = !this.Status;
+  }
+
+}

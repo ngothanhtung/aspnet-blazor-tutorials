@@ -1,0 +1,40 @@
+@page "/products"
+@using System.Text.Json
+@using System.Diagnostics
+@inject HttpClient Http
+<h1>Products</h1>
+
+@if (products.Any() == false)
+{
+  <p><em>Loading...</em></p>
+}
+else
+{
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Temp. (C)</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (var product in products)
+      {
+        <tr>
+          <td>@product.GetProperty("name").GetString()</td>
+          <td>@product.GetProperty("price").GetDecimal()</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
+
+@code {
+  private System.Text.Json.JsonElement.ArrayEnumerator products;
+
+  protected override async Task OnInitializedAsync()
+  {
+    var result = await Http.GetFromJsonAsync<System.Text.Json.JsonElement>("https://training.softech.cloud/api/products");
+    products = result.GetProperty("products").EnumerateArray();
+  }
+}
